@@ -289,10 +289,10 @@
   });
   const diandian=$('#diandian'), chatLog=$('#chatLog'), chatText=$('#chatText'), chatImages=$('#chatImages');
   const chatAttachments=$('#chatAttachments'), chatSend=$('#chatSend'), chatStatus=$('#chatStatus');
-  const notePicker=$('#chatNotePicker'), noteList=$('#chatNoteList'), chatOptions=$('#chatOptions');
+  const notePicker=$('#chatNotePicker'), noteList=$('#chatNoteList'), wearSheet=$('#wearSheet'), wearBody=$('#wearBody');
   const outfitEntry=$('#outfitEntry'), outfitSuggestions=$('#outfitSuggestions');
   const noteButton=diandian.querySelector('[aria-controls="chatNotePicker"]');
-  const optionsButton=diandian.querySelector('[aria-controls="chatOptions"]');
+  const moreButton=diandian.querySelector('[data-chat="more"]');
   const outfitButton=diandian.querySelector('[aria-controls="outfitEntry"]');
   const imageUrls=new Set();
   let attachments=[];
@@ -300,6 +300,7 @@
 
   diandian.prepend($('.status').cloneNode(true));
   diandian.querySelectorAll('[data-icon]').forEach(el=>{el.innerHTML=icon(el.dataset.icon);});
+  wearSheet.querySelectorAll('[data-icon]').forEach(el=>{el.innerHTML=icon(el.dataset.icon);});
   noteList.innerHTML=notes.map(n=>`<button class="chat-note" type="button" data-chat="attach-note" data-id="${n.id}">${photo(n)}<span><strong>${esc(n.title)}</strong><small>${esc(n.author)}</small></span></button>`).join('');
 
   function attachmentContent(attachment){
@@ -470,6 +471,54 @@
     outfitDetail.showModal();
     outfitDetailBody.scrollTop = 0;
   }
+  const wearRows=[
+    {label:'穿搭偏好',tags:['舒适优先','简约休闲']},
+    {label:'身高与尺码参考',tags:['高挑纤细']},
+    {label:'色彩参考',tags:['偏好低饱和色']},
+    {label:'肤色信息',tags:['未说明'],muted:true},
+  ];
+  function wearPage(){
+    const filmNote=notes.find(note=>note.id===6);
+    const rows=wearRows.map(row=>`<div class="wear-row">
+        <span class="wear-label">${row.label}</span>
+        <span class="wear-value">${row.tags.map(tag=>`<span class="wear-tag${row.muted?' wear-tag-muted':''}">${tag}</span>`).join('')}</span>
+      </div>`).join('');
+    const library=filmNote?`<button class="wear-note" type="button" data-act="detail" data-id="${filmNote.id}" aria-label="查看笔记：${esc(filmNote.title)}">
+        <img src="${esc(noteImage(filmNote))}" alt="${esc(filmNote.alt)}">
+        <span class="wear-note-copy"><strong>${esc(filmNote.title)}</strong><small>${esc(filmNote.author)} · ${filmNote.count} 赞</small></span>
+        <span class="wear-note-go">查看<span aria-hidden="true">↗</span></span>
+      </button>`:'<p class="wear-empty">还没有收藏的穿搭笔记。</p>';
+    return `<section class="wear-block">
+        <div class="wear-block-head"><h2>我的穿搭档案</h2><span class="wear-count">4 项</span></div>
+        <p class="wear-sub">点点会按这些信息调整回答的口径</p>
+        <div class="wear-card">${rows}</div>
+      </section>
+      <section class="wear-block">
+        <div class="wear-block-head"><h2>我的穿搭灵感库</h2><span class="wear-count">${filmNote?'1 张':'0 张'}</span></div>
+        <p class="wear-sub">收藏过的笔记，会成为点点找搭配时的参照</p>
+        <div class="wear-gallery">${library}</div>
+      </section>
+      <div class="wear-foot"><button class="wear-reset" type="button" data-wear="reset">开启新对话</button></div>`;
+  }
+  function openWear(){
+    showChatPanel(notePicker,noteButton,false);
+    showChatPanel(outfitEntry,outfitButton,false);
+    wearBody.innerHTML=wearPage();
+    fit(wearSheet);
+    wearSheet.showModal();
+    wearBody.scrollTop=0;
+    wearBody.focus({preventScroll:true});
+  }
+  wearSheet.addEventListener('click',e=>{
+    const button=e.target.closest('[data-wear]');
+    if(!button)return;
+    const {wear}=button.dataset;
+    if(wear==='close')wearSheet.close();
+    else if(wear==='reset'){wearSheet.close();resetChat();moreButton.focus({preventScroll:true});}
+  });
+  wearSheet.addEventListener('close',()=>{
+    if(diandian.open&&!wearSheet.open)moreButton.focus({preventScroll:true});
+  });
   function resetChat(){
     if((chatLog.childElementCount||chatText.value||attachments.length)&&!window.confirm('开启新对话会清空当前消息和草稿。继续吗？'))return;
     imageUrls.forEach(releaseImage);
@@ -483,16 +532,11 @@
   }
   diandian.addEventListener('click',e=>{
     const button=e.target.closest('button[data-chat]');
-    if(!button){
-      if(!e.target.closest('.chat-options'))showChatPanel(chatOptions,optionsButton,false);
-      return;
-    }
+    if(!button)return;
     const {chat,id}=button.dataset;
-    if(chat!=='more')showChatPanel(chatOptions,optionsButton,false);
     switch(chat){
       case 'close':diandian.close();break;
-      case 'more':showChatPanel(chatOptions,optionsButton,chatOptions.hidden);break;
-      case 'reset':resetChat();optionsButton.focus();break;
+      case 'more':openWear();break;
       case 'prompt':
         showChatPanel(notePicker,noteButton,false);
         showChatPanel(outfitEntry,outfitButton,outfitEntry.hidden);
@@ -604,21 +648,20 @@
     }
   });
   diandian.addEventListener('cancel',e=>{
-    if(chatOptions.hidden&&notePicker.hidden&&outfitEntry.hidden)return;
+    if(notePicker.hidden&&outfitEntry.hidden)return;
     e.preventDefault();
-    if(!chatOptions.hidden){showChatPanel(chatOptions,optionsButton,false);optionsButton.focus();}
-    else if(!notePicker.hidden){showChatPanel(notePicker,noteButton,false);noteButton.focus();}
+    if(!notePicker.hidden){showChatPanel(notePicker,noteButton,false);noteButton.focus();}
     else{showChatPanel(outfitEntry,outfitButton,false);outfitButton.focus();}
   });
   diandian.addEventListener('close',()=>{
     showChatPanel(notePicker,noteButton,false);
-    showChatPanel(chatOptions,optionsButton,false);
     showChatPanel(outfitEntry,outfitButton,false);
   });
   function fitOpenDialogs(){
     if(sheet.open)fit();
     if(imageMenu.open)fit(imageMenu);
     if(diandian.open)fit(diandian);
+    if(wearSheet.open)fit(wearSheet);
     if(outfitDetail.open)fit(outfitDetail);
     if(identifySheet.open)fit(identifySheet);
   }

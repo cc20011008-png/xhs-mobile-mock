@@ -127,11 +127,6 @@ button:active{opacity:.76}[hidden]{display:none!important}.icon{width:22px;heigh
 .diandian-head h1{display:flex;align-items:center;justify-content:center;gap:8px;margin:0;font-size:16px;font-weight:650}
 .diandian-head [data-chat="close"]:focus-visible{outline-color:currentColor}
 .diandian-head .icon{width:24px;height:24px}
-.chat-options{
-  position:absolute;top:100%;right:12px;padding:3px 6px;
-  border-radius:12px;background:var(--surface);box-shadow:0 4px 20px #0002;
-}
-.chat-options button{padding:0 12px;min-height:44px;font-size:14px}
 .chat-log{
   display:flex;flex:1;flex-direction:column;align-items:flex-end;gap:12px;
   min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:12px;position:relative;
