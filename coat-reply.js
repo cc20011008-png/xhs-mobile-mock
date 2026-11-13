@@ -14,7 +14,7 @@ const coatReply=(()=>{
     entry.className='outfit-answer coat-answer';
     entry.tabIndex=-1;
     entry.setAttribute('aria-label','点点的个性化回答');
-    const shop='https://s.taobao.com/search?q='+encodeURIComponent('小个子 燕麦色 系带 毛呢中长大衣');
+    const shop='https://www.xiaohongshu.com/search_result?keyword='+encodeURIComponent('小个子 燕麦色 系带 毛呢中长大衣');
     entry.innerHTML=`<div class="outfit-byline"><span class="diandian-mark" aria-hidden="true"></span>点点</div>
       <div class="outfit-result coat-result">
         <section>
@@ -41,9 +41,9 @@ const coatReply=(()=>{
         </section>
         <section class="coat-section">
           <h3>想试试这些大衣？</h3>
-          <a class="coat-product" href="${shop}" target="_blank" rel="noopener noreferrer" aria-label="去淘宝看看相似款：燕麦色系带中长大衣">
+          <a class="coat-product" href="${shop}" target="_blank" rel="noopener noreferrer" aria-label="去小红书市集看相似款：燕麦色系带中长大衣">
             <img src="${image(looks[0])}" alt="">
-            <span class="coat-product-copy"><small>款式参考</small><strong>燕麦色系带中长大衣</strong><span>选购时对照衣长和肩宽</span><b>去淘宝看相似款 <span aria-hidden="true">↗</span></b></span>
+            <span class="coat-product-copy"><small>小红书市集</small><strong>燕麦色系带中长大衣</strong><span>选购时对照衣长和肩宽</span><b>去小红书市集看相似款 <span aria-hidden="true">↗</span></b></span>
           </a>
         </section>
       </div>`;
