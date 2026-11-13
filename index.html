@@ -8,6 +8,7 @@
   <title>日常集 · 发现</title>
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="coat-reply.css">
+  <link rel="stylesheet" href="wear.css">
   <script defer src="assets/note-images.js"></script>
   <script defer src="outfit-search.js"></script>
   <script defer src="coat-reply.js"></script>
@@ -17,8 +18,8 @@
   <div class="stage">
     <aside class="intro" aria-label="设计样板说明">
       <div class="eyebrow"><span></span> 日常集 <b> / </b> 设计样板</div>
-      <h1>生活，<br>有新发现<span>。</span></h1>
-      <p>从一张图、一篇笔记开始，发现别人认真过的日子，也留下自己的生活灵感。</p>
+      <h1>搭搭看</h1>
+      <p>让用户更高效地从海量UGC穿搭内容中，找到适合自己参考的穿法。</p>
       <a class="guide" href="design.md">查看设计规范 <span aria-hidden="true">↗</span></a>
     </aside>
     <main class="phone" aria-label="日常集移动端原型">
@@ -76,10 +77,7 @@
         <header class="diandian-head">
           <button class="icon-btn" type="button" data-chat="close" data-icon="close" aria-label="关闭点点" autofocus></button>
           <h1 id="diandianTitle"><span class="diandian-mark" aria-hidden="true"></span>点点</h1>
-          <button class="icon-btn" type="button" data-chat="more" data-icon="more" aria-label="更多选项" aria-controls="chatOptions" aria-expanded="false"></button>
-          <div class="chat-options" id="chatOptions" hidden>
-            <button type="button" data-chat="reset">开启新对话</button>
-          </div>
+          <button class="icon-btn" type="button" data-chat="more" data-icon="more" aria-label="点点穿搭" aria-haspopup="dialog" aria-controls="wearSheet"></button>
         </header>
         <div class="chat-log" id="chatLog" role="log" aria-label="对话消息"></div>
         <section class="chat-note-picker" id="chatNotePicker" aria-labelledby="chatNoteTitle" hidden>
@@ -111,6 +109,14 @@
           </form>
           <p class="chat-status" id="chatStatus" role="status">本地原型</p>
         </footer>
+      </dialog>
+      <dialog class="wear-sheet" id="wearSheet" aria-labelledby="wearTitle">
+        <header class="wear-head">
+          <button class="icon-btn" type="button" data-wear="close" data-icon="back" aria-label="返回点点"></button>
+          <h1 id="wearTitle"><span class="diandian-mark" aria-hidden="true"></span>点点穿搭</h1>
+          <span class="wear-head-slot" aria-hidden="true"></span>
+        </header>
+        <div class="wear-body" id="wearBody" tabindex="-1"></div>
       </dialog>
       <dialog class="full-sheet" id="outfitDetail" aria-labelledby="outfitDetailTitle">
         <div class="sheet-head">
