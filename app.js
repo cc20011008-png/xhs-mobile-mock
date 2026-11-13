@@ -21,11 +21,11 @@
   const icon=(name)=>`<svg class="icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${icons[name]}</svg>`;
   const notes=[
     {id:1, title:'在深圳看了一场不用赶时间的海',author:'野餐的阿岚',count:1268,tag:'出行',local:true,tile:0,ratio:1.04,color:'#d9e9dd',alt:'午后的深圳海滩与棕榈树',body:'从地铁出来慢慢走，海边比市区凉快一点。四点以后再到，找棵棕榈树坐一会儿，听浪就好。回去前记得把沙滩上的垃圾一起带走。'},
-    {id:2, title:'初秋通勤｜宽松衬衫也能穿得很利落',author:'阿栗穿什么',count:486,tag:'穿搭',tile:1,ratio:.79,color:'#edd8c8',alt:'穿浅色条纹衬衫与深色长裤的街头行人',body:'这件衬衫故意买大了一点，袖口挽两折，搭直筒裤就有精神。鞋包都挑暖棕色，早晨来不及想搭配也不会出错。'},
+    {id:6, title:'逛唱片店，听点不在播放列表里的歌',author:'小周在听歌',count:94,tag:'生活',local:true,tile:5,ratio:.84,color:'#e9d8c8',alt:'暖色灯光下浏览唱片的人',body:'在架子前翻了半天，最后带走一张没有听过的旧唱片。比起算法推荐，这种随手遇见的惊喜很难复制。'},
     {id:3, title:'把书桌挪到窗边后，下班更想回家了',author:'松弛研究所',count:723,tag:'家居',tile:3,ratio:.89,color:'#eadfcd',alt:'窗边有台灯、绿植和书的木质书桌',body:'没换桌子，只是把它转向窗边。常用的书竖着放，桌面只留一盏灯和手边那本笔记。下午光线落下来，连回邮件都没那么烦。'},
     {id:4, title:'周末下午的抹茶拿铁和草莓吐司',author:'慢点喝咖啡',count:315,tag:'美食',local:true,tile:2,ratio:1.05,color:'#dce7cb',alt:'玻璃杯里的冰抹茶和草莓吐司',body:'加了冰的抹茶偏苦，和草莓奶油刚好配。靠窗的位置最适合独自坐一会儿，吃完也不急着走。'},
     {id:5, title:'十几块的花，把周一过成了周末',author:'花瓶里的星期天',count:172,tag:'生活',tile:4,ratio:1.15,color:'#f3dce3',alt:'窗边玻璃花瓶里的粉色花束',body:'回家把叶子剪掉几片，花枝斜切再插瓶。没有专门布置，放在每天起床第一眼就会看到的位置。'},
-    {id:6, title:'逛唱片店，听点不在播放列表里的歌',author:'小周在听歌',count:94,tag:'生活',local:true,tile:5,ratio:.84,color:'#e9d8c8',alt:'暖色灯光下浏览唱片的人',body:'在架子前翻了半天，最后带走一张没有听过的旧唱片。比起算法推荐，这种随手遇见的惊喜很难复制。'}
+    {id:2, title:'初秋通勤｜宽松衬衫也能穿得很利落',author:'阿栗穿什么',count:486,tag:'穿搭',tile:1,ratio:.79,color:'#edd8c8',alt:'穿浅色条纹衬衫与深色长裤的街头行人',body:'这件衬衫故意买大了一点，袖口挽两折，搭直筒裤就有精神。鞋包都挑暖棕色，早晨来不及想搭配也不会出错。'}
   ];
   const allNotes=[...notes,...outfitSearch.references];
   const notesById=new Map(allNotes.map(note=>[String(note.id),note]));
