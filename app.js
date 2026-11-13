@@ -377,14 +377,14 @@
       style:'复古工装风 · 低饱和棕色系',
       summary:'深棕色上衣压住整体，卡其色长裤提亮下半身，再用米色帆布包呼应裤色收尾。深上浅下拉开层次，适合周末逛街。',
       items:[
-        {name:'深棕色上衣',desc:'廓形落肩 · 主色块',color:'#4a3524'},
-        {name:'卡其色长裤',desc:'宽松直筒 · 提亮下半身',color:'#c9b48f'},
-        {name:'米色帆布包',desc:'呼应裤色 · 收尾点缀',color:'#e8dfd0'},
+        {name:'深棕色上衣',desc:'廓形落肩 · 主色块',img:'assets/identify/brown-jacket.jpg'},
+        {name:'卡其色长裤',desc:'宽松直筒 · 提亮下半身',img:'assets/identify/khaki-pants.jpg'},
+        {name:'米色帆布包',desc:'呼应裤色 · 收尾点缀',img:'assets/identify/beige-tote.jpg'},
       ],
       products:[
-        {name:'复古棕色落肩针织上衣',desc:'廓形宽松 · 深棕主色',price:169,color:'#4a3524'},
-        {name:'卡其色宽松直筒休闲裤',desc:'垂感面料 · 高腰显腿长',price:129,color:'#c9b48f'},
-        {name:'米色大容量帆布单肩包',desc:'帆布质感 · 通勤出街两用',price:69,color:'#e8dfd0'},
+        {name:'复古棕色落肩针织上衣',desc:'廓形宽松 · 深棕主色',price:169,img:'assets/identify/brown-jacket.jpg'},
+        {name:'卡其色宽松直筒休闲裤',desc:'垂感面料 · 高腰显腿长',price:129,img:'assets/identify/khaki-pants.jpg'},
+        {name:'米色大容量帆布单肩包',desc:'帆布质感 · 通勤出街两用',price:69,img:'assets/identify/beige-tote.jpg'},
       ],
     },
   };
@@ -399,7 +399,7 @@
         <p class="identify-summary">${esc(result.summary)}</p>
         <p class="identify-kicker">单品拆解</p>
         <ul class="identify-items">
-          ${result.items.map(item=>`<li><span class="identify-swatch" style="background:${item.color}" aria-hidden="true"></span><span><strong>${esc(item.name)}</strong><small>${esc(item.desc)}</small></span></li>`).join('')}
+          ${result.items.map(item=>`<li><img class="identify-swatch" src="${esc(item.img)}" alt="${esc(item.name)}"><span><strong>${esc(item.name)}</strong><small>${esc(item.desc)}</small></span></li>`).join('')}
         </ul>
         <div class="identify-actions">
           <button class="identify-primary" type="button" data-act="identify-similar">刷同类穿搭</button>
@@ -426,7 +426,7 @@
   }
   function productCardHTML(item){
     return `<a class="identify-product" href="${xhsSearchUrl(item.name)}" target="_blank" rel="noopener noreferrer" aria-label="去小红书店铺看看：${esc(item.name)}">
-      <span class="identify-product-photo" style="background:${item.color}" aria-hidden="true"></span>
+      <img class="identify-product-photo" src="${esc(item.img)}" alt="${esc(item.name)}">
       <span class="identify-product-copy">
         <span class="identify-product-shop">小红书店铺</span>
         <strong>${esc(item.name)}</strong>
