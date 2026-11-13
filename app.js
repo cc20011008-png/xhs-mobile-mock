@@ -44,6 +44,7 @@
   const imageMenu = $('#imageMenu'), imageMenuActions = $('#imageMenuActions'), imageReport = $('#imageReport');
   const saveImage = $('#saveImage'), watchLaterButton = $('#watchLater');
   const outfitDetail = $('#outfitDetail'), outfitDetailBody = $('#outfitDetailBody'), closeOutfitDetail = $('#closeOutfitDetail');
+  const identifySheet=$('#identifySheet'), identifyBody=$('#identifyBody'), identifySource=$('#identifySource');
   const esc=(s)=>String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'","&#39;");
   closeSheet.innerHTML=icon('back');
   let toastTimer, priorFocus, lastOpener, imageNote, dirty=false;
@@ -254,6 +255,8 @@
       case 'suggest':search(val);break;
       case 'clear':state.query='';render(true,'[data-act="search"]');break;
       case 'detail':detail(n);break;
+      case 'identify-similar':identifySheet.close();open('#复古工装风',searchResultHTML('#复古工装风',[...outfitSearch.references,notes[1],notes[5]]));break;
+      case 'identify-buy':identifySheet.close();open('同款商品',`<div class="identify-products">${identifyResults[6].products.map(productCardHTML).join('')}</div><p class="identify-source">价格为演示数据，点击卡片可跳转小红书搜索</p>`);break;
       case 'image-menu':openImageMenu(n,b);break;
       case 'saved-tab':state.savedTab=val;render(true,`[data-act="saved-tab"][data-val="${val}"]`);break;
       case 'close':sheet.close();break;
@@ -369,7 +372,73 @@
     chatLog.append(entry);
     return entry;
   }
+  const identifyResults={
+    6:{
+      style:'复古工装风 · 低饱和棕色系',
+      summary:'深棕色上衣压住整体，卡其色长裤提亮下半身，再用米色帆布包呼应裤色收尾。深上浅下拉开层次，适合周末逛街。',
+      items:[
+        {name:'深棕色上衣',desc:'廓形落肩 · 主色块',color:'#4a3524'},
+        {name:'卡其色长裤',desc:'宽松直筒 · 提亮下半身',color:'#c9b48f'},
+        {name:'米色帆布包',desc:'呼应裤色 · 收尾点缀',color:'#e8dfd0'},
+      ],
+      products:[
+        {name:'复古棕色落肩针织上衣',desc:'廓形宽松 · 深棕主色',price:169,color:'#4a3524'},
+        {name:'卡其色宽松直筒休闲裤',desc:'垂感面料 · 高腰显腿长',price:129,color:'#c9b48f'},
+        {name:'米色大容量帆布单肩包',desc:'帆布质感 · 通勤出街两用',price:69,color:'#e8dfd0'},
+      ],
+    },
+  };
+  const xhsSearchUrl=name=>`https://www.xiaohongshu.com/search_result?keyword=${encodeURIComponent(name)}`;
+  function identifyCardHTML(note,result){
+    return `<div class="identify-query" aria-label="你识别的图片">
+        <img src="${esc(noteImage(note))}" alt="${esc(note.alt)}"><span>搜图中内容</span>
+      </div>
+      <section class="identify-card" aria-label="点点识图结果">
+        <p class="identify-kicker">穿搭风格</p>
+        <h3>${esc(result.style)}</h3>
+        <p class="identify-summary">${esc(result.summary)}</p>
+        <p class="identify-kicker">单品拆解</p>
+        <ul class="identify-items">
+          ${result.items.map(item=>`<li><span class="identify-swatch" style="background:${item.color}" aria-hidden="true"></span><span><strong>${esc(item.name)}</strong><small>${esc(item.desc)}</small></span></li>`).join('')}
+        </ul>
+        <div class="identify-actions">
+          <button class="identify-primary" type="button" data-act="identify-similar">刷同类穿搭</button>
+          <button class="identify-secondary" type="button" data-act="identify-buy">买同款</button>
+        </div>
+      </section>
+      <p class="identify-source">识图结果为本地演示数据</p>`;
+  }
+  function showIdentify(note,result){
+    identifySource.textContent=`来自「${note.title}」`;
+    identifySource.hidden=false;
+    identifyBody.innerHTML=identifyCardHTML(note,result);
+    fit(identifySheet);
+    identifySheet.showModal();
+    identifyBody.scrollTop=0;
+  }
+  function searchResultHTML(keyword,list){
+    return `<div class="search-bar"><span class="search-bar-box">${icon('search')}${esc(keyword)}</span><span class="search-bar-hint">搜索</span></div>
+      <nav class="search-tabs" aria-label="搜索结果分类">
+        <button aria-pressed="true">综合</button><button aria-pressed="false">图文</button><button aria-pressed="false">商品</button><button aria-pressed="false">用户</button>
+      </nav>
+      <div class="search-result-row" role="status">相关笔记 ${list.length} 篇 · 演示数据</div>
+      ${feed(list)}`;
+  }
+  function productCardHTML(item){
+    return `<a class="identify-product" href="${xhsSearchUrl(item.name)}" target="_blank" rel="noopener noreferrer" aria-label="去小红书店铺看看：${esc(item.name)}">
+      <span class="identify-product-photo" style="background:${item.color}" aria-hidden="true"></span>
+      <span class="identify-product-copy">
+        <span class="identify-product-shop">小红书店铺</span>
+        <strong>${esc(item.name)}</strong>
+        <small>${esc(item.desc)}</small>
+        <b>¥${item.price}</b>
+      </span>
+      <span class="identify-product-go">去购买 <span aria-hidden="true">↗</span></span>
+    </a>`;
+  }
   function showImageOutfit(note){
+    const result=identifyResults[note.id];
+    if(result){showIdentify(note,result);return;}
     if(outfitDetail.open)outfitDetail.close();
     fit(diandian);
     if(!diandian.open)diandian.showModal();
@@ -442,6 +511,11 @@
         chatStatus.textContent='已添加红色棒球帽示例';
         break;
       case 'outfit-question':focusQuestion(button.dataset.value);break;
+      case 'coat-question':
+        showChatPanel(outfitEntry,outfitButton,false);
+        focusQuestion('155cm 适合穿大衣吗？');
+        chatStatus.textContent='发送后点点会给出个性化回答';
+        break;
       case 'outfit-detail':
         openOutfitDetail(notesById.get(id),button);
         break;
@@ -546,7 +620,9 @@
     if(imageMenu.open)fit(imageMenu);
     if(diandian.open)fit(diandian);
     if(outfitDetail.open)fit(outfitDetail);
+    if(identifySheet.open)fit(identifySheet);
   }
+  $('#closeIdentify').addEventListener('click',()=>identifySheet.close());
   window.addEventListener('resize',fitOpenDialogs);
   window.addEventListener('scroll',fitOpenDialogs,{passive:true});
   window.visualViewport?.addEventListener('resize',fitOpenDialogs);

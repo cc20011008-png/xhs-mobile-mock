@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="description" content="日常集：生活方式社区移动端设计样板">
+  <title>日常集 · 发现</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="coat-reply.css">
+  <script defer src="assets/note-images.js"></script>
+  <script defer src="outfit-search.js"></script>
+  <script defer src="coat-reply.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <div class="stage">
+    <aside class="intro" aria-label="设计样板说明">
+      <div class="eyebrow"><span></span> 日常集 <b> / </b> 设计样板</div>
+      <h1>生活，<br>有新发现<span>。</span></h1>
+      <p>从一张图、一篇笔记开始，发现别人认真过的日子，也留下自己的生活灵感。</p>
+      <a class="guide" href="design.md">查看设计规范 <span aria-hidden="true">↗</span></a>
+    </aside>
+    <main class="phone" aria-label="日常集移动端原型">
+      <div class="app">
+        <div class="status" aria-hidden="true">
+          <span>9:41</span>
+          <div><svg viewBox="0 0 58 14" width="58" height="14" fill="currentColor"><rect x="0" y="9" width="3" height="4" rx="1"/><rect x="5" y="7" width="3" height="6" rx="1"/><rect x="10" y="4" width="3" height="9" rx="1"/><rect x="15" y="1" width="3" height="12" rx="1"/><path d="M23 4a10 10 0 0 1 15 0m-12 3a6 6 0 0 1 9 0m-6 3a2 2 0 0 1 3 0" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><rect x="41" y="2" width="15" height="10" rx="2.5" fill="none" stroke="currentColor" opacity=".45"/><rect x="43" y="4" width="11" height="6" rx="1"/><rect x="57" y="5" width="1" height="4" rx=".5"/></svg></div>
+        </div>
+        <header class="top" id="top"></header>
+        <div class="scroll" id="scroll" tabindex="-1">
+          <section id="content" aria-label="笔记列表"></section>
+        </div>
+        <nav class="bottom" id="bottom" aria-label="底部导航"></nav>
+        <div class="toast" role="status" id="toast" hidden></div>
+      </div>
+      <dialog class="full-sheet" id="sheet" aria-labelledby="sheetTitle">
+        <div class="sheet-head">
+          <button class="icon-btn" data-act="close" aria-label="返回" id="closeSheet"></button>
+          <strong id="sheetTitle"></strong>
+          <span></span>
+        </div>
+        <div id="sheetBody" class="sheet-body"></div>
+        <div class="toast sheet-toast" id="sheetToast" role="status" hidden></div>
+      </dialog>
+      <dialog class="image-menu" id="imageMenu" aria-label="图片操作">
+        <button class="image-menu-handle" id="closeImageMenu" type="button" aria-label="关闭图片操作" autofocus></button>
+        <div class="image-menu-actions" id="imageMenuActions">
+          <div class="image-menu-tiles">
+            <a id="saveImage" data-icon="download" download>保存</a>
+            <button type="button" data-image-action="dislike" data-icon="dislike">不喜欢</button>
+            <button type="button" data-image-action="report" data-icon="warning">举报</button>
+          </div>
+          <button type="button" class="image-menu-row" id="watchLater" data-image-action="later" data-icon="bookmark"><span>稍后再看</span></button>
+          <button type="button" class="image-menu-row" data-image-action="search" data-icon="scan">搜图中内容</button>
+        </div>
+        <section class="image-report" id="imageReport" aria-labelledby="imageReportTitle" hidden>
+          <button class="icon-btn" type="button" id="backToImageActions" data-image-action="back" data-icon="back" aria-label="返回图片操作"></button>
+          <h2 id="imageReportTitle">选择举报原因</h2>
+          <p>仅在此浏览器记录</p>
+          <button type="button" data-image-action="record-report">不适宜内容</button>
+          <button type="button" data-image-action="record-report">广告或垃圾信息</button>
+          <button type="button" data-image-action="record-report">其他</button>
+        </section>
+      </dialog>
+      <dialog class="identify-sheet" id="identifySheet" aria-labelledby="identifyTitle">
+        <button class="identify-handle" id="closeIdentify" type="button" aria-label="关闭识图结果" autofocus></button>
+        <header class="identify-head">
+          <span class="diandian-mark" aria-hidden="true"></span>
+          <strong id="identifyTitle">点点识图</strong>
+          <span class="identify-note" id="identifySource" hidden></span>
+        </header>
+        <div class="identify-body" id="identifyBody"></div>
+      </dialog>
+      <dialog class="diandian" id="diandian" aria-labelledby="diandianTitle">
+        <header class="diandian-head">
+          <button class="icon-btn" type="button" data-chat="close" data-icon="close" aria-label="关闭点点" autofocus></button>
+          <h1 id="diandianTitle"><span class="diandian-mark" aria-hidden="true"></span>点点</h1>
+          <button class="icon-btn" type="button" data-chat="more" data-icon="more" aria-label="更多选项" aria-controls="chatOptions" aria-expanded="false"></button>
+          <div class="chat-options" id="chatOptions" hidden>
+            <button type="button" data-chat="reset">开启新对话</button>
+          </div>
+        </header>
+        <div class="chat-log" id="chatLog" role="log" aria-label="对话消息"></div>
+        <section class="chat-note-picker" id="chatNotePicker" aria-labelledby="chatNoteTitle" hidden>
+          <div class="chat-note-head">
+            <h2 id="chatNoteTitle">添加笔记</h2>
+            <button class="icon-btn" type="button" data-chat="notes" data-icon="close" aria-label="关闭笔记列表"></button>
+          </div>
+          <div class="chat-note-list" id="chatNoteList"></div>
+        </section>
+        <footer class="chat-footer">
+          <div class="outfit-entry" id="outfitEntry" hidden>
+            <p>选一张你想搭配的单品图</p>
+            <button type="button" data-chat="outfit-upload">上传图片</button>
+            <button type="button" data-chat="outfit-sample">试用红色棒球帽</button>
+            <button type="button" data-chat="coat-question">155大衣穿搭</button>
+          </div>
+          <div class="outfit-suggestions" id="outfitSuggestions" aria-label="穿搭提问建议" hidden></div>
+          <button class="chat-prompt" type="button" data-chat="prompt" aria-expanded="false" aria-controls="outfitEntry">穿搭灵感</button>
+          <form class="chat-composer" id="chatComposer">
+            <ul class="chat-attachments" id="chatAttachments" aria-label="待发送附件" hidden></ul>
+            <div class="chat-input-row">
+              <span class="chat-input-icon" data-icon="message" aria-hidden="true"></span>
+              <input type="text" id="chatText" aria-label="消息" placeholder="发消息…" maxlength="2000" autocomplete="off" enterkeyhint="send">
+              <input type="file" id="chatImages" accept="image/*" multiple hidden>
+              <button class="icon-btn" type="button" data-chat="images" data-icon="camera" aria-label="上传图片"></button>
+              <button class="icon-btn" type="button" data-chat="notes" data-icon="addCircle" aria-label="添加笔记" aria-controls="chatNotePicker" aria-expanded="false"></button>
+              <button class="icon-btn chat-send" id="chatSend" type="submit" data-icon="send" aria-label="发送消息" hidden></button>
+            </div>
+          </form>
+          <p class="chat-status" id="chatStatus" role="status">本地原型</p>
+        </footer>
+      </dialog>
+      <dialog class="full-sheet" id="outfitDetail" aria-labelledby="outfitDetailTitle">
+        <div class="sheet-head">
+          <button class="icon-btn" id="closeOutfitDetail" type="button" aria-label="返回点点" autofocus></button>
+          <strong id="outfitDetailTitle">笔记详情</strong>
+          <span></span>
+        </div>
+        <div id="outfitDetailBody" class="sheet-body"></div>
+        <div class="toast sheet-toast" id="outfitDetailToast" role="status" hidden></div>
+      </dialog>
+    </main>
+  </div>
+</body>
+</html>
+<script>
+addEventListener('load',()=>{
+  setTimeout(()=>{
+    document.querySelector('[data-act="diandian"]').click();
+    setTimeout(()=>{ document.querySelector('[data-chat="prompt"]').click(); },150);
+    setTimeout(()=>{ const b=document.querySelector('[data-chat="coat-question"]'); b&&b.click(); },400);
+    setTimeout(()=>{ document.getElementById('chatComposer').dispatchEvent(new Event('submit',{cancelable:true})); },800);
+  },200);
+});
+</script>

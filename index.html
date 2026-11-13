@@ -63,6 +63,15 @@
           <button type="button" data-image-action="record-report">其他</button>
         </section>
       </dialog>
+      <dialog class="identify-sheet" id="identifySheet" aria-labelledby="identifyTitle">
+        <button class="identify-handle" id="closeIdentify" type="button" aria-label="关闭识图结果" autofocus></button>
+        <header class="identify-head">
+          <span class="diandian-mark" aria-hidden="true"></span>
+          <strong id="identifyTitle">点点识图</strong>
+          <span class="identify-note" id="identifySource" hidden></span>
+        </header>
+        <div class="identify-body" id="identifyBody"></div>
+      </dialog>
       <dialog class="diandian" id="diandian" aria-labelledby="diandianTitle">
         <header class="diandian-head">
           <button class="icon-btn" type="button" data-chat="close" data-icon="close" aria-label="关闭点点" autofocus></button>
@@ -85,6 +94,7 @@
             <p>选一张你想搭配的单品图</p>
             <button type="button" data-chat="outfit-upload">上传图片</button>
             <button type="button" data-chat="outfit-sample">试用红色棒球帽</button>
+            <button type="button" data-chat="coat-question">155大衣穿搭</button>
           </div>
           <div class="outfit-suggestions" id="outfitSuggestions" aria-label="穿搭提问建议" hidden></div>
           <button class="chat-prompt" type="button" data-chat="prompt" aria-expanded="false" aria-controls="outfitEntry">穿搭灵感</button>
